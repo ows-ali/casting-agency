@@ -29,10 +29,12 @@ mccabe==0.6.1
 packaging==23.0
 platformdirs==3.0.0
 pluggy==0.13.1
+psycopg2-binary==2.9.5
 py==1.11.0
 pyasn1==0.4.8
 PyJWT==1.7.1
 pytest==6.2.2
+python-dotenv==0.21.1
 python-jose==3.3.0
 rsa==4.9
 ruamel.yaml==0.16.5

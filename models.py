@@ -18,12 +18,12 @@ setup_db(app)
 '''
 
 def setup_db(app, database_path=database_path):
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:12345@localhost:5433/capstonee'#database_path
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
     with app.app_context():
-        db.create_all()
+        db.drop_all()
 
 
 '''
@@ -33,17 +33,6 @@ db_drop_and_create_all()
     !!NOTE you can change the database_filename variable to have multiple verisons of a database
 '''
 
-def db_drop_and_create_all():
-    db.drop_all()
-    db.create_all()
-    # add one demo row which is helping in POSTMAN test
-    # drink = Drink(
-    #     title='water',
-    #     recipe='[{"name": "water", "color": "blue", "parts": 1}]'
-    # )
-
-
-    # drink.insert()
 class Actors(db.Model):
     __tablename__ = 'actors'
 
@@ -85,7 +74,7 @@ class Movies(db.Model):
     title = db.Column(db.String(120))
     date = db.Column(db.String(120))
 
-    actors = db.relationship('Actor', backref="movies", lazy=True)
+    actors = db.relationship('Actors', backref="movies", lazy=True)
 
 
 
@@ -110,3 +99,33 @@ class Movies(db.Model):
             'date': self.date,
         }
         )
+
+def db_drop_and_create_all(app):
+    # with app.app_context():
+        # db.drop_all()
+        # db.create_all()
+    # add one demo row which is helping in POSTMAN test
+    try:
+        with app.app_context():
+            # db.drop_all()
+            db.create_all()
+
+            movie = Movies(
+                title='Maula Jutt',
+                date='1972-03-24'
+                
+            )
+
+
+
+            movie.insert()
+            actor = Actors(
+                name='Mahira Khan',
+                age=30,
+                gender='Female',
+                movie_id=movie.id
+
+            )
+            actor.insert()
+    except Exception as e:
+        print('errr',e)
