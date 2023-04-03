@@ -28,64 +28,108 @@ def create_app(test_config=None):
   @app.route('/movies',methods=['GET'])
   @requires_auth('get:movies')
   def movies(payload):
-    movies = Movies.query.all()
     
-    resp=[]
-    for movie in movies:
-      mov = {
-
+    try:
+      movies = Movies.query.all()
       
-        'id' :  movie.id,
-        'title' : movie.title,
-        'date' : movie.date,
-        'actors': []
-      }
-      actors=movie.actors
-      print('movie.actors')
-      print(movie.actors)
-      movActors = []
-      for actor in actors:
-        movActors.append({
-          'id':actor.id,
-          'name':actor.name,
-          'age':actor.age,
-          'gender': actor.gender
+      resp=[]
+      for movie in movies:
+        mov = {
 
-        })
-      mov['actors'] = movActors
-      resp.append(mov)
-      
+        
+          'id' :  movie.id,
+          'title' : movie.title,
+          'date' : movie.date,
+          'actors': []
+        }
+        actors=movie.actors
+        print('movie.actors')
+        print(movie.actors)
+        movActors = []
+        for actor in actors:
+          movActors.append({
+            'id':actor.id,
+            'name':actor.name,
+            'age':actor.age,
+            'gender': actor.gender
+
+          })
+        mov['actors'] = movActors
+        resp.append(mov)
+    except Exception as e:
+      abort(422,{'message': {'message': str(e)}})
+  
     return jsonify({"resp":resp})
 
 
-  @app.route('/actors',methods=['POST'])
-  @requires_auth('post:actors')
-  def postactor(payload):
+  @app.route('/movies',methods=['POST'])
+  @requires_auth('post:movies')
+  def postmovie(payload):
     # actors = Actors.query.all()
     req = request.get_json()
+    title= req.get('title','')
+    date= req.get('date','')
 
-    req_recipe = req['recipe']
-    movie = Movies()
-    movie.title = req['title']
+    movie = Movies(title,date)
+    # movie.title = req['title']
+    # movie.data= req['date']
+    movie.insert()
     
-    resp=[]
-    for actor in actors:
-      movie = Movies.query.get(actor.movie_id)
+    # resp=[]
+    # for actor in actors:
+    #   movie = Movies.query.get(actor.movie_id)
 
-      act = {
+    #   act = {
 
       
-        'id' :  actor.id,
-        'name' : actor.name,
-        'age' : actor.age,
-        'gender' : actor.gender,
-        'movie': movie.title
+    #     'id' :  actor.id,
+    #     'name' : actor.name,
+    #     'age' : actor.age,
+    #     'gender' : actor.gender,
+    #     'movie': movie.title
         
 
-      }
-      resp.append(act)
+    #   }
+      # resp.append(act)
       
-    return jsonify({"resp":resp})
+    return jsonify({"status":200, "resp":movie.id})
+
+  @app.route('/movies',methods=['PATCH'])
+  @requires_auth('patch:movies')
+  def patchmovie(payload):
+    # actors = Actors.query.all()
+
+    try:
+      req = request.get_json()
+      title= req.get('title','')
+      date= req.get('date','')
+
+      movie = Movies.query.get(id)
+      
+      # movie.title = req['title']
+      # movie.data= req['date']
+      movie.insert()
+      
+      # resp=[]
+      # for actor in actors:
+      #   movie = Movies.query.get(actor.movie_id)
+
+      #   act = {
+
+        
+      #     'id' :  actor.id,
+      #     'name' : actor.name,
+      #     'age' : actor.age,
+      #     'gender' : actor.gender,
+      #     'movie': movie.title
+          
+
+      #   }
+        # resp.append(act)
+    except Exception as e:
+        abort(422,{'message': {'message': str(e)}})
+
+    return jsonify({"status":200, "resp":movie.id})
 
 
 
@@ -97,6 +141,11 @@ def create_app(test_config=None):
     resp=[]
     for actor in actors:
       movie = Movies.query.get(actor.movie_id)
+      print('movvvvvvv',movie)
+      print('movvvvvvv',actor.movie_id, actor.name)
+      movieName = "NA"
+      if movie:
+        movieName =movie.title
 
       act = {
 
@@ -105,13 +154,32 @@ def create_app(test_config=None):
         'name' : actor.name,
         'age' : actor.age,
         'gender' : actor.gender,
-        'movie': movie.title
+        'movie': movieName
         
 
       }
       resp.append(act)
       
     return jsonify({"resp":resp})
+
+
+  @app.route('/actors',methods=['POST'])
+  @requires_auth('post:actors')
+  def postactor(payload):
+
+    req = request.get_json()
+    name= req.get('name','')
+    age= req.get('age','')
+    gender= req.get('gender','')
+
+    actor = Actors(name,age,gender, None)
+    
+    actor.insert()
+    
+
+
+      
+    return jsonify({"status":200, "resp":actor.id})
 
 
 

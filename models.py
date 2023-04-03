@@ -42,6 +42,12 @@ class Actors(db.Model):
     gender = db.Column(db.String(120))
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=True)
 
+    def __init__(self, name, age, gender, movie_id):
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.movie_id = movie_id
+
 
     def insert(self):
         db.session.add(self)
@@ -78,6 +84,11 @@ class Movies(db.Model):
 
 
 
+    def __init__(self, title, date):
+        self.title = title
+        self.date = date
+
+        
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -123,9 +134,10 @@ def db_drop_and_create_all(app):
                 name='Mahira Khan',
                 age=30,
                 gender='Female',
-                movie_id=movie.id
+                movie_id=1
 
             )
+            
             actor.insert()
     except Exception as e:
         print('errr',e)
