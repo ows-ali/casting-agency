@@ -57,6 +57,38 @@ def create_app(test_config=None):
       
     return jsonify({"resp":resp})
 
+
+  @app.route('/actors',methods=['POST'])
+  @requires_auth('post:actors')
+  def postactor(payload):
+    # actors = Actors.query.all()
+    req = request.get_json()
+
+    req_recipe = req['recipe']
+    movie = Movies()
+    movie.title = req['title']
+    
+    resp=[]
+    for actor in actors:
+      movie = Movies.query.get(actor.movie_id)
+
+      act = {
+
+      
+        'id' :  actor.id,
+        'name' : actor.name,
+        'age' : actor.age,
+        'gender' : actor.gender,
+        'movie': movie.title
+        
+
+      }
+      resp.append(act)
+      
+    return jsonify({"resp":resp})
+
+
+
   @app.route('/actors',methods=['GET'])
   @requires_auth('get:actors')
   def actors(payload):
@@ -86,8 +118,8 @@ def create_app(test_config=None):
   return app
 
 
-APP = create_app()
+app = create_app()
 
 if __name__ == '__main__':
 
-  APP.run(host='0.0.0.0', port=8080, debug=True)
+  app.run(host='0.0.0.0', port=8080, debug=True)
