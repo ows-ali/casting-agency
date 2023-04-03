@@ -14,7 +14,7 @@ import os
 
 AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', 'dev-c67acshinun1vt55.us.auth0.com')
 ALGORITHMS = ['RS256']
-API_AUDIENCE = os.environ.get('API_AUDIENCE', 'API_AUDIENCE')
+API_AUDIENCE = os.environ.get('API_AUDIENCE', 'capstone-api-iden')
 
 ## AuthError Exception
 '''
@@ -68,7 +68,7 @@ def get_token_auth_header():
         }, 401)
 
     token = parts[1]
-    print('returning token')
+    # print('returning token')
     return token
 
 
@@ -115,11 +115,11 @@ def verify_decode_jwt(token):
         jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     except Exception as e:
         print('in eexc eh',e)
-    print('dfd')
+
     jwks = json.loads(jsonurl.read())
-    print('sd')
+
     unverified_header = jwt.get_unverified_header(token)
-    print('sd')
+
 
     rsa_key = {}
     if 'kid' not in unverified_header:
@@ -141,10 +141,10 @@ def verify_decode_jwt(token):
             }
     print('after for')
     if rsa_key:
-        print('in rsa_keyyyyyyyyy')
+        # print('in rsa_keyyyyyyyyy')
         # print()
         try:
-            print('in tryig',token)
+            # print('in tryig',token)
             payload = jwt.decode(
                 token,
                 rsa_key,
