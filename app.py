@@ -64,6 +64,8 @@ def create_app(test_config=None):
     
     resp=[]
     for actor in actors:
+      movie = Movies.query.get(actor.movie_id)
+
       act = {
 
       
@@ -71,7 +73,9 @@ def create_app(test_config=None):
         'name' : actor.name,
         'age' : actor.age,
         'gender' : actor.gender,
+        'movie': movie.title
         
+
       }
       resp.append(act)
       
