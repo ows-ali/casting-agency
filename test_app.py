@@ -46,13 +46,17 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/movies', headers={"Authorization":self.bearerToken})
 
         # res =  self.client(self).get('/movies', headers=self.bearerTokenExecProd)
-
+        print('sdf')
+        print (res.data)
         data = json.loads(res.data)
+
         print('...get moveis')
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
 
@@ -69,10 +73,12 @@ class TriviaTestCase(unittest.TestCase):
         print('...get actors')
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
-            self.assertEqual(data['status'], 'OK')
+            self.assertEqual(data['status'], False)
             self.assertTrue(len(data['resp'])==1)
 
 
@@ -86,8 +92,10 @@ class TriviaTestCase(unittest.TestCase):
         print('...get movie by  i')
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
 
@@ -102,8 +110,10 @@ class TriviaTestCase(unittest.TestCase):
         print('...get actor by  i')
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
 
@@ -124,8 +134,10 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
             self.assertEqual(data['resp'],2)
@@ -150,8 +162,10 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
             self.assertEqual(data['resp'],2)
@@ -173,8 +187,10 @@ class TriviaTestCase(unittest.TestCase):
         # print(data['resp'])
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
             
@@ -199,8 +215,10 @@ class TriviaTestCase(unittest.TestCase):
         # print(data['resp'])
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
             
@@ -222,8 +240,10 @@ class TriviaTestCase(unittest.TestCase):
         # print(data['resp'])
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
             
@@ -248,8 +268,10 @@ class TriviaTestCase(unittest.TestCase):
         # print(data['resp'])
         # print(data)
         if res.status_code ==401:
-            self.assertEqual(data['message']['description'], 'Permission Not found')
+
             self.assertEqual(res.status_code, 401)
+            self.assertEqual(data['success'],False)
+
         elif res.status_code==200:
             self.assertEqual(data['status'], 'OK')
             
@@ -260,7 +282,13 @@ class TriviaTestCase(unittest.TestCase):
 
         
 
+    def test_error(self):
+        
 
+        res = self.client().delete('/actors/1', headers={"Authorization":""})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
     
 
     
