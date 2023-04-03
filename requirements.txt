@@ -21,7 +21,6 @@ iniconfig==2.0.0
 isort==4.3.18
 itsdangerous==2.0.1
 Jinja2==3.0.0
-jose==1.0.0
 jsonify==0.5
 lazy-object-proxy==1.4.0
 Mako==1.2.4
